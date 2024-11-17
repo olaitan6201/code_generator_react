@@ -1,0 +1,38 @@
+@tailwind components;
+
+@layer components {
+    .paginate {
+        @apply px-3 py-2 leading-tight;
+
+        &.active {
+            @apply z-10 hover:bg-blue-100 hover:text-blue-700;
+        }
+    }
+
+    .prev {
+        @apply block ml-0 rounded-l-lg;
+    }
+    .next {
+        @apply block rounded-r-lg;
+    }
+
+    .dark-mode {
+        .paginate {
+            @apply bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white;
+
+            &.active {
+                @apply border-gray-700 bg-gray-700 text-white;
+            }
+        }
+    }
+
+    .light-mode {
+        .paginate {
+            @apply text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700;
+
+            &.active {
+                @apply text-blue-600 border-blue-300 bg-blue-50;
+            }
+        }
+    }
+}

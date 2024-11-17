@@ -1,0 +1,25 @@
+@tailwind components;
+
+@layer components {
+    table {
+        th,
+        td {
+            @apply py-3 px-6;
+        }
+    }
+
+    .table-responsive {
+        @apply min-w-full max-w-full overflow-x-scroll;
+    }
+
+    .dark-mode {
+        .table-responsive {
+            @apply scrollbar-thumb-primary-dark-2 scrollbar-track-primary-dark-3 scrollbar-thin;
+        }
+    }
+    .light-mode {
+        .table-responsive {
+            @apply scrollbar-thumb-gray-300 scrollbar-track-blue-100 scrollbar-thin;
+        }
+    }
+}

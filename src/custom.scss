@@ -1,0 +1,63 @@
+@tailwind components;
+
+@layer components {
+    .row {
+        @apply grid grid-cols-1 md:grid-cols-12;
+    }
+    .col-md-1 {
+        @apply w-full md:col-span-1;
+    }
+    .col-md-2 {
+        @apply w-full md:col-span-2;
+    }
+    .col-md-3 {
+        @apply w-full md:col-span-3;
+    }
+    .col-md-4 {
+        @apply w-full md:col-span-4;
+    }
+    .col-md-5 {
+        @apply w-full md:col-span-5;
+    }
+    .col-md-6 {
+        @apply w-full md:col-span-6;
+    }
+    .col-md-7 {
+        @apply w-full md:col-span-7;
+    }
+    .col-md-8 {
+        @apply w-full md:col-span-8;
+    }
+    .col-md-9 {
+        @apply w-full md:col-span-9;
+    }
+    .col-md-10 {
+        @apply w-full md:col-span-10;
+    }
+    .col-md-11 {
+        @apply w-full md:col-span-11;
+    }
+    .col-md-12 {
+        @apply w-full md:col-span-12;
+    }
+
+    .dark-mode {
+        input {
+            @apply placeholder-gray-500 focus:outline-none;
+
+            &.disabled {
+                @apply text-gray-500 cursor-not-allowed;
+            }
+        }
+    }
+
+    .light-mode {
+        input {
+            @apply placeholder-gray-300 focus:outline-none;
+
+            &.disabled {
+                @apply text-gray-500 cursor-not-allowed;
+            }
+        }
+    }
+}

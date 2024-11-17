@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+
+    font-family: 'Work Sans', sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.tox.tox-tinymce {
+    border: none;
+}
+.tox-statusbar {
+    display: none !important;
+}
+
+input[type='time']::-webkit-calendar-picker-indicator {
+    filter: invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg)
+        brightness(95%) contrast(80%);
+}
+
+// input[type='date']::-webkit-inner-spin-button,
+// input[type='date']::-webkit-calendar-picker-indicator {
+//     display: none;
+//     -webkit-appearance: none;
+// }
+
+.dark-mode {
+    .tox-editor-header {
+        border: none !important;
+        background-color: #0d1526 !important;
+        border-bottom: 1px solid #1a2433 !important;
+    }
+    .tox-toolbar__primary {
+        border: none !important;
+        background-color: #0d1526 !important;
+    }
+
+    // .tox-edit-area {
+    //     iframe {
+    //         border: none !important;
+    //         background-color: #0d1526 !important;
+    //         color: #dbeafe !important;
+    //     }
+    // }
+}
+
+// select{
+//     -webkit-appearance: none;
+//     -moz-appearance: none;
+//     appearance: none;
+//     text-indent: 10px;
+// }
+
+.animate-spin-reverse {
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        from {
+            transform: rotate(360deg);
+        }
+        to {
+            transform: rotate(0deg);
+        }
+    }
+}
+
+@layer components {
+    body {
+        @apply scrollbar-thin;
+    }
+    .link {
+        @apply w-[95%] flex flex-row items-center p-3 gap-2 border-none rounded-md transition duration-200 ease-in-out active:brightness-110 my-1;
+    }
+    .user-upgrade-card-button {
+        @apply flex flex-row justify-center items-center px-8 py-3 gap-8 border rounded-md;
+    }
+    .theme-switch-button {
+        @apply w-[95%] flex space-x-2 justify-center items-center px-4 py-3 rounded-md font-bold;
+    }
+    .card {
+        @apply p-6 rounded-xl;
+    }
+    .scroll-x {
+        @apply overflow-x-auto scrollbar-thin;
+    }
+    .scroll-y {
+        @apply overflow-y-auto scrollbar-thin;
+    }
+    .controlled-item-x {
+        @apply flex flex-row items-start gap-8 w-full;
+    }
+    .controlled-link {
+        @apply font-extrabold cursor-pointer hover:brightness-75 active:brightness-100;
+    }
+    .controlled-header {
+        @apply text-lg md:text-xl lg:text-2xl;
+    }
+
+    .dark-mode {
+        @apply bg-primary-dark text-primary-off shadow-sm;
+
+        aside {
+            @apply bg-primary-dark;
+        }
+        .sidebar {
+            @apply border-r-primary-dark-2 transition duration-150 ease-out;
+        }
+        .sidebar-element-wrap {
+            @apply border-b-primary-dark-2;
+        }
+        .user-upgrade-card {
+            @apply bg-primary-dark-3;
+        }
+        .user-upgrade-card-button {
+            @apply border-gray-wash text-info-light;
+        }
+        .auth-theme-switch-button {
+            @apply text-info;
+
+            &.active {
+                @apply bg-primary-dark-3 text-info-light;
+            }
+        }
+        .footer {
+            @apply bg-primary-dark border-t-primary-dark-2 transition duration-150 ease-out;
+        }
+        .header {
+            @apply bg-primary-dark border-b-primary-dark-2 transition duration-150 ease-out;
+        }
+        .header-button {
+            @apply border border-info-light text-info-light;
+        }
+        .controlled-text {
+            @apply text-gray-100;
+        }
+        .controlled-text-inverse {
+            @apply text-gray-800;
+        }
+        .controlled-sub-text {
+            @apply text-gray-400;
+        }
+        .controlled-sub-text-inverse {
+            @apply text-gray-100;
+        }
+        .controlled-border {
+            @apply border border-gray-800;
+        }
+        .controlled-border-gray {
+            @apply border border-gray-800;
+        }
+        .controlled-border-r {
+            @apply border-r border-r-gray-800;
+        }
+        .controlled-border-l {
+            @apply border-l border-l-gray-800;
+        }
+        .controlled-border-b {
+            @apply border-b border-b-gray-800;
+        }
+        .controlled-bg {
+            @apply bg-gray-900;
+
+            &.item,
+            .item {
+                @apply hover:bg-gray-800 active:bg-gray-900;
+            }
+        }
+        .item {
+            @apply hover:bg-gray-800 active:bg-gray-900;
+        }
+        .controlled-bg-primary-2 {
+            @apply bg-primary-dark;
+        }
+        .controlled-bg-primary {
+            @apply bg-primary-dark;
+
+            &.item,
+            .item {
+                &.active {
+                    @apply bg-gray-800;
+                }
+                @apply hover:bg-gray-800 active:bg-gray-900;
+            }
+        }
+        .controlled-bg-gray-blue {
+            @apply bg-gray-800;
+        }
+        .controlled-bg-red {
+            @apply bg-red-500;
+        }
+        .controlled-bg-gray {
+            @apply bg-gray-700;
+        }
+        .controlled-bg-gray-dark-white {
+            @apply bg-gray-900;
+        }
+        .controlled-bg-green {
+            @apply bg-green-400;
+        }
+        .controlled-text-green {
+            @apply text-green-900;
+        }
+        .controlled-bg-2 {
+            @apply bg-gray-800;
+
+            &.item,
+            .item {
+                @apply hover:bg-gray-900 active:bg-gray-800;
+            }
+        }
+        .controlled-item-x > div {
+            @apply border-r border-r-gray-800 last:border-r-0;
+        }
+        .controlled-scrollbar {
+            @apply scrollbar-thin scrollbar-thumb-gray-400;
+        }
+        .favorite-icon {
+            @apply text-orange-400;
+        }
+    }
+
+    .light-mode {
+        @apply text-primary-dark-3 bg-gray-50 shadow-sm;
+
+        main {
+            @apply bg-gray-100;
+        }
+        aside {
+            @apply bg-white;
+        }
+        .sidebar {
+            @apply border-r-off-white transition duration-150 ease-out;
+        }
+        .sidebar-element-wrap {
+            @apply border-b-off-white;
+        }
+        .user-upgrade-card {
+            @apply bg-info-white;
+
+            p {
+                @apply text-hash;
+            }
+        }
+        .user-upgrade-card-button {
+            @apply border-primary-off text-primary;
+        }
+        .auth-theme-switch-button {
+            @apply text-primary-light;
+
+            &.active {
+                @apply bg-primary-off text-primary;
+            }
+        }
+        .footer {
+            @apply bg-white border-t-gray-200 transition duration-150 ease-out;
+        }
+        .header {
+            @apply bg-white border-b-gray-200 transition duration-150 ease-out;
+        }
+        .header-button {
+            @apply border border-blue-500 text-blue-600;
+        }
+        .controlled-text {
+            @apply text-gray-800;
+        }
+        .controlled-sub-text {
+            @apply text-gray-500;
+        }
+        .controlled-border-gray {
+            @apply border border-gray-100;
+        }
+        .controlled-bg-primary-2 {
+            @apply bg-gray-100;
+        }
+        .controlled-bg-red {
+            @apply bg-red-500;
+        }
+        .controlled-bg-gray {
+            @apply bg-gray-200;
+        }
+        .controlled-bg-gray-dark-white {
+            @apply bg-white;
+        }
+        .controlled-bg-green {
+            @apply bg-green-300;
+        }
+        .controlled-text-green {
+            @apply text-green-900;
+        }
+        .controlled-scrollbar {
+            @apply scrollbar-thin scrollbar-thumb-gray-500;
+        }
+        .favorite-icon {
+            @apply text-orange-500;
+        }
+    }
+}

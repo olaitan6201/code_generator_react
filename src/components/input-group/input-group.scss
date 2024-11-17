@@ -1,0 +1,53 @@
+@tailwind components;
+
+@layer components {
+    .dark-mode {
+        .input-group {
+            label {
+                @apply text-blue-100;
+            }
+            .input {
+                &.success {
+                    @apply border-gray-500 text-gray-100 active:border-blue-600 focus-within:border-blue-600;
+                }
+                &.error {
+                    @apply border-red-500 text-gray-100 active:border-blue-600 focus-within:border-blue-600;
+                }
+
+                input,
+                textarea {
+                    @apply placeholder-gray-500 focus:outline-none;
+
+                    &.disabled {
+                        @apply text-gray-500 cursor-not-allowed;
+                    }
+                }
+            }
+        }
+    }
+
+    .light-mode {
+        .input-group {
+            label {
+                @apply text-gray-800 font-bold;
+            }
+            .input {
+                &.success {
+                    @apply border-gray-600 text-gray-800 active:border-blue-600 focus-within:border-blue-600;
+                }
+                &.error {
+                    @apply border-red-500 text-gray-800 active:border-blue-600 focus-within:border-blue-600;
+                }
+
+                input,
+                textarea {
+                    @apply placeholder-gray-300 focus:outline-none;
+
+                    &.disabled {
+                        @apply text-gray-500 cursor-not-allowed;
+                    }
+                }
+            }
+        }
+    }
+}

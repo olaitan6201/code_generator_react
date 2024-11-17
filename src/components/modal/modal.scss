@@ -1,0 +1,35 @@
+@tailwind components;
+
+@layer components{
+    .modal{
+        @apply top-0 left-0 fixed w-full h-screen flex-col justify-center items-center mx-auto my-auto z-50;
+
+        .modal-content{
+            @apply flex flex-col items-start py-4 px-6 gap-6;
+            &.modal-xs{
+                @apply w-10/12 sm:w-6/12 md:w-4/12 lg:w-3/12;
+            }
+            &.modal-sm{
+                @apply w-11/12 sm:w-6/12 md:w-5/12 lg:w-4/12;
+            }
+            &.modal-md{
+                @apply w-11/12 sm:w-8/12 md:w-7/12 lg:w-6/12;
+            }
+            &.modal-lg{
+                @apply w-11/12 sm:w-10/12 md:w-9/12 lg:w-8/12;
+            }
+
+            .modal-header{
+                @apply flex items-center justify-between w-full;
+
+                h1{
+                    @apply text-lg sm:text-xl lg:text-2xl;
+                }
+            }
+
+            .modal-body{
+                @apply w-full h-fit max-h-96 overflow-y-scroll scrollbar-thin;
+            }
+        }
+    }
+}
