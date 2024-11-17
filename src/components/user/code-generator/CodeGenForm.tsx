@@ -1,6 +1,5 @@
-import { langTrans } from "@/api/lang";
 import InputGroup from "@/components/input-group/InputGroup";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Button from "@/components/Button";
 import String from "@/components/String";
 import Card from "@/components/Card";
@@ -13,6 +12,7 @@ import { ProgrammingLanguages } from "@/api/programming_languages";
 import SelectGroup, { SelectItem } from "@/components/SelectGroup";
 import { CodeGen } from "@/interfaces/generators.interface";
 import { BsEraser } from "react-icons/bs";
+import axios from 'axios';
 
 interface Prop {
     isEdit?: boolean
@@ -35,8 +35,6 @@ export default function CodeGenForm({ formResult, setFormResult, isEdit = false 
     })
     const [formLoading, setFormLoading] = useState(false)
     const [formValidated, setFormValidated] = useState(false)
-    const file_success = useRef('')
-    const file_error = useRef('')
     const [formSubmitted, setFormSubmitted] = useState(false)
 
     const { document_title, description, programming_language } = formData
@@ -64,7 +62,7 @@ export default function CodeGenForm({ formResult, setFormResult, isEdit = false 
             const formDataRef = {
                 document_title: formResult?.document_title || '',
                 description: formResult?.description || '',
-                programming_language: formResult?.programming_language || "en",
+                programming_language: formResult?.programming_language || "javascript",
             }
             setFormData(formDataRef)
         }
@@ -97,64 +95,79 @@ export default function CodeGenForm({ formResult, setFormResult, isEdit = false 
         return true
     }
 
+    const generateCode = async (documentTitle: string, programmingLanguage: string, description: string) => {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY ?? ''}` // Use your environment variable for the API key
+        };
+
+        let body: { model: string, prompt: string } | null = null;
+
+        if (!documentTitle || documentTitle.trim().length === 0) {
+            body = {
+                model: 'gpt-4o-mini',
+                prompt: `Generate a ${programmingLanguage} code snippet: ${description}`,
+            }
+        } else {
+            body = {
+                model: 'gpt-4o-mini',
+                prompt: `Generate a ${programmingLanguage} code snippet for the following requirements:
+                    Document Title: ${documentTitle}
+                    Description: ${description}`,
+            };
+        }
+
+
+        try {
+            const response = await axios.post('https://api.openai.com/v1/completions', body, { headers });
+            return response.data; // Return the parsed response data
+        } catch (error: any) {
+            console.error('Error in AI request:', error.response ? error.response.data : error.message);
+            throw error; // Propagate error to handle it in calling function
+        }
+    }
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (formLoading || !fieldsValidated()) return;
         setFormLoading(true)
         try {
-            // const reqData = !isEdit ? {
-            //     path: 'user/code-generator',
-            //     method: 'POST',
-            //     data: { ...formData }
-            // } : {
-            //     path: `user/code-generator/${formResult?.id}/regenerate`,
-            //     method: 'POST',
-            //     data: { ...formData }
-            // }
 
-            // const res = await callAuthApi(reqData)
+            const res = await generateCode(formData.document_title ?? '', formData.programming_language ?? '', formData.description ?? '')
 
-            // if (res.status === 200) {
-            //     const { data }: { data: CodeGen } = res.data
-            //     setFormResult(data)
-            //     // setFormData(dataDomain)
-            //     setFormSubmitted(true)
-            // }
+            console.log({ res });
+
+
+            const documentTitle = formData.document_title
+            const programmingLanguage = formData.programming_language
+
+            // Format response into the CodeGen interface structure
+            const now = new Date();
+            const codeGen: CodeGen = {
+                id: Math.floor(Math.random() * 10000), // Generating a random ID
+                date_created: now.toISOString(),
+                created_at_date: now.toISOString().split('T')[0], // Extract date in YYYY-MM-DD format
+                created_at_time: now.toTimeString().split(' ')[0], // Extract time in HH:MM:SS format
+                document_title: documentTitle,
+                document_title_truncated: documentTitle.length > 20 ? documentTitle.substring(0, 17) + '...' : documentTitle,
+                description: description,
+                result: res, // Extract the generated code snippet
+                programming_language: programmingLanguage,
+            };
+
+            const cgs = localStorage.getItem('code_gens') ?? ''
+
+            let code_gens: CodeGen[] = cgs.trim().length > 0 ? JSON.parse(cgs) : [];
+            code_gens.push(codeGen)
+
+            localStorage.setItem('code_gens', JSON.stringify(code_gens))
+
+            setFormResult(codeGen)
+            setFormSubmitted(true)
 
         } catch (error: any) {
-            if (error.response) {
-                const { status, data } = error.response
-                switch (status) {
-                    case 400:
-                        toast.error(data?.message || langTrans('error_msg'))
-                        break;
-
-                    case 422:
-                        const { errors: err } = data
-                        for (const key in err) {
-                            if (key === 'media') {
-                                file_success.current = ''
-                                file_error.current = err[key][0]
-                            }
-                            else {
-                                handleFormErrors(key, err[key][0])
-                            }
-                        }
-                        break;
-
-                    case 401:
-                        // const res = await userLogOut()
-                        // if (res.success && res.log_out) {
-                        //     setUserData(userDefaultState)
-                        //     toast.error(langTrans('unauthorized'))
-                        //     return navigate('/sign-in')
-                        // }
-                        break;
-
-                    default:
-                        break;
-                }
-            }
+            toast(error.response.data.error.message)
+            // toast(error.error.message ?? error.message)
         }
         setFormLoading(false)
     }

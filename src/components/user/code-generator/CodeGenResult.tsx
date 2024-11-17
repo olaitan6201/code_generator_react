@@ -1,7 +1,6 @@
 import { useEffect, Dispatch, SetStateAction } from 'react'
 import { BiCopy } from "react-icons/bi";
 import { useState } from "react";
-import { langTrans } from "@/api/lang";
 import String from "@/components/String";
 // import { callAuthApi } from '@/api/api';
 import { toast } from 'react-toastify';
@@ -21,7 +20,7 @@ export default function CodeGenResult({ formResult }: { formResult: CodeGen | un
 
     const [selectedNav, setSelectedNav] = useState(navList[0])
     const [result, setResult] = useState<CodeGen | undefined>(formResult)
-    const [history, _] = useState<CodeGen[]>([])
+    const [history, setHistory] = useState<CodeGen[]>([])
     const [loadingHistory, setLoadingHistory] = useState(false)
 
     useEffect(() => {
@@ -39,36 +38,12 @@ export default function CodeGenResult({ formResult }: { formResult: CodeGen | un
         if (loadingHistory) return;
         setLoadingHistory(true)
         try {
-            // const res = await callAuthApi({
-            //     path: 'user/code-generator/history',
-            //     method: 'GET'
-            // })
+            const cgs = localStorage.getItem('code_gens') ?? ''
 
-            // if (res.status === 200) {
-            //     const { data } = res.data
-            //     setHistory(data)
-            // }
+            let code_gens: CodeGen[] = cgs.trim().length > 0 ? JSON.parse(cgs) : [];
+
+            setHistory(code_gens)
         } catch (error: any) {
-            if (error.response) {
-                const { status, data } = error.response
-                switch (status) {
-                    case 400:
-                        toast.error(data?.message || langTrans('error_msg'))
-                        break;
-
-                    case 401:
-                        // const res = await userLogOut()
-                        // if (res.success && res.log_out) {
-                        //     setUserData(userDefaultState)
-                        //     toast.error(langTrans('unauthorized'))
-                        //     return navigate('/sign-in')
-                        // }
-                        break;
-
-                    default:
-                        break;
-                }
-            }
         }
         setLoadingHistory(false)
     }
